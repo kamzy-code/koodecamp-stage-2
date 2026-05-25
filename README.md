@@ -84,7 +84,7 @@ src/
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/kamzy-code/koodecamp-stage-2.git
 cd stage_2
 ```
 
