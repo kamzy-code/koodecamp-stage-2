@@ -9,11 +9,11 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "/",
     "strict": true,
     "ignoreDeprecations": "6.0",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*"],
+  "include": ["/*", "prompt", "main.ts"],
   "exclude": ["node_modules", "dist"]
 }

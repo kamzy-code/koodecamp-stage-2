@@ -17,11 +17,7 @@ const client = new OpenRouter({
   apiKey: apiKey,
 });
 
-async function callModel(messages: ChatMessages[]) {
-  console.log();
-  console.log();
-  console.log("Generating response from OpenRouter...");
-
+async function callLLM(messages: ChatMessages[]) {
   const response = await client.chat.send({
     chatRequest: {
       model,
@@ -32,43 +28,11 @@ async function callModel(messages: ChatMessages[]) {
   return response.choices[0].message.content;
 }
 
-async function callOpenRouter(messages: ChatMessages[]) {
-  console.log();
-  console.log();
-  console.log("Generating response from OpenRouter...");
-  // API call with reasoning
-  const response = await fetch(
-    "https://openrouter.ai/api/v1/chat/completions",
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: model,
-        messages,
-        reasoning: { enabled: true },
-      }),
-    },
-  );
-
-  // Extract the assistant message
-  const result: any = await response.json();
-  if (result.error) {
-    console.log(result);
-    throw new Error(result.error.message);
-  }
-
-  const assistantMessage = result.choices[0].message.content;
-
-  return assistantMessage;
-}
 
 async function submitPrompt(customerQuery: string) {
   // step 1: Interpret the customer's intent
   const step1 = getCustomerIntent(customerQuery);
-  const stepOneResponse = await callOpenRouter([
+  const stepOneResponse = await callLLM([
     { role: "system", content: step1.system },
     { role: "user", content: step1.user },
   ]);
@@ -76,7 +40,7 @@ async function submitPrompt(customerQuery: string) {
 
   // step 2: Map the query to possible categories
   const step2 = mapQueryToCategories({ customerQuery, stepOneResponse });
-  const stepTwoResponse = await callOpenRouter([
+  const stepTwoResponse = await callLLM([
     { role: "system", content: step2.system },
     { role: "user", content: step2.user },
   ]);
@@ -88,7 +52,7 @@ async function submitPrompt(customerQuery: string) {
     stepOneResponse,
     stepTwoResponse,
   });
-  const stepThreeResponse = await callOpenRouter([
+  const stepThreeResponse = await callLLM([
     { role: "system", content: step3.system },
     { role: "user", content: step3.user },
   ]);
@@ -100,7 +64,7 @@ async function submitPrompt(customerQuery: string) {
     stepOneResponse,
     stepThreeResponse,
   });
-  const stepFourResponse = await callOpenRouter([
+  const stepFourResponse = await callLLM([
     { role: "system", content: step4.system },
     { role: "user", content: step4.user },
   ]);
@@ -113,7 +77,7 @@ async function submitPrompt(customerQuery: string) {
     stepThreeResponse,
     stepFourResponse,
   });
-  const stepFiveResponse = await callOpenRouter([
+  const stepFiveResponse = await callLLM([
     { role: "system", content: step5.system },
     { role: "user", content: step5.user },
   ]);
