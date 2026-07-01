@@ -12,7 +12,9 @@
     "rootDir": ".",
     "strict": true,
     "ignoreDeprecations": "6.0",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true
   },
   "include": ["main.ts", "prompt/**/*.ts"],
   "exclude": ["node_modules", "dist"]

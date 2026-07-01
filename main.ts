@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
 import { OpenRouter } from "@openrouter/sdk";
-import { getCustomerIntent } from "./prompt/step.one.js";
-import { mapQueryToCategories } from "./prompt/step.two.js";
-import { getStepThreePrompt } from "./prompt/step.three.js";
-import { getStepFourPrompt } from "./prompt/step.four.js";
-import { getStepFivePrompt } from "./prompt/step.five.js";
-import { ChatMessages } from "@openrouter/sdk/models";
+import { getCustomerIntent } from "./prompt/step_one.ts";
+import { mapQueryToCategories } from "./prompt/step_two.ts";
+import { getStepThreePrompt } from "./prompt/step_three.ts";
+import { getStepFourPrompt } from "./prompt/step_four.ts";
+import { getStepFivePrompt } from "./prompt/step_five.ts";
+// import { ChatMessages } from "@openrouter/sdk/models"; 
 dotenv.config();
 
 const apiKey = process.env.OPENROUTER_API_KEY;
@@ -17,7 +17,7 @@ const client = new OpenRouter({
   apiKey: apiKey,
 });
 
-async function callLLM(messages: ChatMessages[]) {
+async function callLLM(messages: { role: "system" | "user" | "assistant"; content: string }[]) {
   const response = await client.chat.send({
     chatRequest: {
       model,
